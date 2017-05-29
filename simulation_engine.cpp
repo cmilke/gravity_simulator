@@ -184,9 +184,6 @@ extern "C" {
         _num_steps = N_steps;
 
         calculate_paths(timestep_length, masses, init_pos, init_vel, body_array);
-    }
-
-    void find_energy_error() {
         calculate_energy_difference();
     }
 
