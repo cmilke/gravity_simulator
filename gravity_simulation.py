@@ -12,6 +12,6 @@ render_parameters = {'x':[-20,20],
                       'flat mode':False}
 
 
-initial_conditions = simulation_condition_reader.read()
-position_array = simulation_interface.simulate(time_duration,initial_conditions)
-simulation_artist.visualize_simulation(time_duration,position_array,render_parameters)
+initial_conditions = simulation_condition_reader.read('initial_conditions.dat')
+#position_array = simulation_interface.simulate(time_duration,initial_conditions)
+#simulation_artist.visualize_simulation(time_duration,position_array,render_parameters)
