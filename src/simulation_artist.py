@@ -18,18 +18,18 @@ def initialize_render(render_parameters, number_bodies, flat_mode):
         zmin=-1
         zmax=1
 
-    colors = []
-    for i in range(0,number_bodies):
-        luminosity = 0.5
-        saturation = 1
-        hue = i / float(number_bodies)
-        rgbcolor = colorsys.hls_to_rgb(hue,luminosity,saturation)
-        hexcolor = matplotlib.colors.to_hex(rgbcolor)
-        colors.append(hexcolor)
+    #colors = []
+    #for i in range(0,number_bodies):
+    #    luminosity = 0.5
+    #    saturation = 1
+    #    hue = i / float(number_bodies)
+    #    rgbcolor = colorsys.hls_to_rgb(hue,luminosity,saturation)
+    #    hexcolor = matplotlib.colors.to_hex(rgbcolor)
+    #    colors.append(hexcolor)
 
     render_parameters['axes'] = axes
     render_parameters['figure'] = figure
-    render_parameters['colors'] = colors
+    #render_parameters['colors'] = colors
 
 
 def set_axes_limits(params):
@@ -44,8 +44,9 @@ def render_image(render_parameters, body_list):
         y = body[1]
         z = body[2]
         color = render_parameters['colors'][i]
+        marker = render_parameters['markers'][i]
         set_axes_limits(render_parameters)
-        Plotter.plot(x,y,z,color)
+        Plotter.plot(x,y,z,color=color,marker=marker)
     Plotter.savefig('image.png')
 
 
@@ -70,7 +71,8 @@ def animate(visible_step, **kwargs):
         y = body[1][start:end]
         z = body[2][start:end]
         color = render_parameters['colors'][i]
-        render_parameters['axes'].plot(x,y,z,color)
+        marker = render_parameters['markers'][i]
+        render_parameters['axes'].plot(x,y,z,color=color,marker=marker)
 
 
 def render_animation(time_duration,body_list,render_parameters):

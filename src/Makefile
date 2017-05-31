@@ -5,7 +5,7 @@ fast: simulation_engine.cpp
 	clang++ -O3 -shared -fPIC -o simulation_engine.so simulation_engine.cpp
 
 clean:
-	-rm animation.mp4 image.png 2&>/dev/null || true	
+	-rm *pyc 2>/dev/null || true
 
 spotless: clean
-	-rm simulation_engine.so 2&>/dev/null || true
+	-rm simulation_engine.so 2>/dev/null || true

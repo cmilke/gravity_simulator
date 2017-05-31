@@ -1,12 +1,18 @@
+import os 
 import ctypes
 import math
 import numpy
+
+
+
 
 def simulate(time_duration, initial_conditions):
     timestep_length = .01 #reccomended = 0.0001
     number_steps = int(time_duration*10 / timestep_length)
 
-    simulation_engine = ctypes.CDLL('/home/cmilke/Documents/physics_masters/classical/gravity_simulator/simulation_engine.so')
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    simulation_engine_file = dir_path + '/simulation_engine.so'
+    simulation_engine = ctypes.CDLL(simulation_engine_file)
     simulation_engine.get_error.restype = ctypes.c_double
 
     number_bodies = len(initial_conditions['position'])
