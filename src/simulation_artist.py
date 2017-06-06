@@ -97,3 +97,4 @@ def visualize_simulation(time_duration, body_list, render_parameters):
     render_image(render_parameters,body_list)
     if animate_mode:
         render_animation(time_duration,body_list,render_parameters)
+    print('Simulation rendered, program complete.')

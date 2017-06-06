@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 from src import simulation_condition_reader
 from src import simulation_interface
 from src import simulation_artist
