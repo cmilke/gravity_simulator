@@ -1,3 +1,9 @@
-mass    ; position  ; velocity     ; color   ; marker
-1.988e30;  0 0 0    ; 0 0 0        ; yellow    ; o
-5.972e24; 149e9 0 0 ; 0 29.78e3 0  ; green ;
+mass (kg) ; position (m) ; velocity (m/s) ; color   ; marker
+1.594e29  ;   0 0 0      ;  0 0 0         ; red     ; o
+4.72e24   ;  1.66e9 0 0  ;  0 7.99e4 0    ; orange  ;
+9.73e24   ;  2.28e9 0 0  ;  0 6.85e4 0    ; #C75F23 ;
+1.97e24   ;  3.21e9 0 0  ;  0 5.76e4 0    ; cyan    ;
+1.43e24   ;  4.22e9 0 0  ;  0 5.03e4 0    ; #2038FF ;
+2.15e24   ;  5.55e9 0 0  ;  0 4.38e4 0    ; #000F8E ;
+3.380e24  ;  6.75e9 0 0  ;  0 3.97e4 0    ; #2E9568 ;
+5.136e23  ;  8.92e9 0 0  ;  0 3.46e4 0    ; #D3D5AE ;

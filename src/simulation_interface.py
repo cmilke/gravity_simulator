@@ -6,8 +6,7 @@ import numpy
 
 
 
-def simulate(time_duration, initial_conditions):
-    timestep_length = .01 #reccomended = 0.0001
+def simulate(time_duration, timestep_length, initial_conditions):
     number_steps = int(time_duration*10 / timestep_length)
 
     dir_path = os.path.dirname(os.path.realpath(__file__))

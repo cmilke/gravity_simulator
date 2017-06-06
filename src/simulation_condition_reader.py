@@ -1,6 +1,6 @@
 _gravitational_constant = 6.674e-11
-_distance_scale_factor = 1e-10
-_period_scale_factor = 3e-7 #1 year is scaled down to ~10 seconds
+_distance_scale_factor = 1e-9
+_period_scale_factor = 5e-5
 _velocity_scale_factor = _distance_scale_factor / _period_scale_factor
 _mass_scale_factor = _gravitational_constant * ( _distance_scale_factor**3 / _period_scale_factor**2 )
 

@@ -12,30 +12,24 @@ _trail_length_divisor = 50 #make this smaller to make the trail longer
 def initialize_render(render_parameters, number_bodies, flat_mode):
     figure = Plotter.figure()
     axes = figure.add_subplot(1,1,1,projection='3d')
+    axes.w_xaxis.set_pane_color((0,0,0,0))
+    axes.w_yaxis.set_pane_color((0,0,0,0))
+    axes.w_zaxis.set_pane_color((0,0,0,0))
 
     if flat_mode:
         axes.view_init(90,0)
         zmin=-1
         zmax=1
 
-    #colors = []
-    #for i in range(0,number_bodies):
-    #    luminosity = 0.5
-    #    saturation = 1
-    #    hue = i / float(number_bodies)
-    #    rgbcolor = colorsys.hls_to_rgb(hue,luminosity,saturation)
-    #    hexcolor = matplotlib.colors.to_hex(rgbcolor)
-    #    colors.append(hexcolor)
-
     render_parameters['axes'] = axes
     render_parameters['figure'] = figure
-    #render_parameters['colors'] = colors
 
 
 def set_axes_limits(params):
     params['axes'].set_xlim3d(params['x'][0],params['x'][1])
     params['axes'].set_ylim3d(params['y'][0],params['y'][1])
     params['axes'].set_zlim3d(params['z'][0],params['z'][1])
+    params['axes'].patch.set_facecolor('black')
 
 
 def render_image(render_parameters, body_list):
