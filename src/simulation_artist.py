@@ -1,4 +1,3 @@
-import functools
 import colorsys
 import matplotlib
 import matplotlib.pyplot as Plotter
@@ -9,12 +8,11 @@ from mpl_toolkits.mplot3d import Axes3D
 _trail_length_divisor = 50 #make this smaller to make the trail longer
 
 
+
 def initialize_render(render_parameters, number_bodies, flat_mode):
     figure = Plotter.figure()
     axes = figure.add_subplot(1,1,1,projection='3d')
-    axes.w_xaxis.set_pane_color((0,0,0,0))
-    axes.w_yaxis.set_pane_color((0,0,0,0))
-    axes.w_zaxis.set_pane_color((0,0,0,0))
+    figure.subplots_adjust(left=0, bottom=0, right=1, top=1, wspace=None, hspace=None)
 
     if flat_mode:
         axes.view_init(90,0)
@@ -25,70 +23,92 @@ def initialize_render(render_parameters, number_bodies, flat_mode):
     render_parameters['figure'] = figure
 
 
-def set_axes_limits(params):
-    params['axes'].set_xlim3d(params['x'][0],params['x'][1])
-    params['axes'].set_ylim3d(params['y'][0],params['y'][1])
-    params['axes'].set_zlim3d(params['z'][0],params['z'][1])
-    params['axes'].patch.set_facecolor('black')
+
+def set_axes_parameters(render_parameters):
+    axes = render_parameters['axes']
+    axes.w_xaxis.set_pane_color((0,0,0,0))
+    axes.w_yaxis.set_pane_color((0,0,0,0))
+    axes.w_zaxis.set_pane_color((0,0,0,0))
+    axes.patch.set_facecolor('black')
+    axes.set_xlim3d(render_parameters['x'][0],render_parameters['x'][1])
+    axes.set_ylim3d(render_parameters['y'][0],render_parameters['y'][1])
+    axes.set_zlim3d(render_parameters['z'][0],render_parameters['z'][1])
+
 
 
 def render_image(render_parameters, body_list):
+    set_axes_parameters(render_parameters)
     for i,body in enumerate(body_list):
         x = body[0]
         y = body[1]
         z = body[2]
         color = render_parameters['colors'][i]
         marker = render_parameters['markers'][i]
-        set_axes_limits(render_parameters)
         Plotter.plot(x,y,z,color=color,marker=marker)
-    Plotter.savefig('image.png')
+    Plotter.savefig('image.png', bbox_inches='tight')
 
 
-def animate(visible_step, **kwargs):
-    body_list = kwargs['body_list']
-    time_duration = kwargs['time_duration']
-    render_parameters= kwargs['render_parameters']
 
+def initialize_animation(body_list, render_parameters):
+    Plotter.cla()
+    color = render_parameters['colors']
+    marker = render_parameters['markers']
+    axes = render_parameters['axes']
+    set_axes_parameters(render_parameters)
+    lines = []
+    for i,body in enumerate(body_list):
+        line = axes.plot(body[0][0:1], 
+                         body[1][0:1],
+                         body[2][0:1],
+                         color=color[i],
+                         marker=marker[i])[0]
+        lines.append(line)
+    return lines
+
+
+
+def animate(visible_step, body_list, time_duration, number_visible_steps, render_parameters, lines):
     number_steps = len(body_list[0][0])
-    number_visible_steps = int(time_duration*10) #ten frames per second
     animation_trail_length = int(number_steps / _trail_length_divisor)
 
     end = int(visible_step * number_steps / number_visible_steps)
     start = end - animation_trail_length
     if start < 0: start = 0
 
-    Plotter.cla()
-    set_axes_limits(render_parameters)
-
     for i,body in enumerate(body_list):
         x = body[0][start:end]
         y = body[1][start:end]
         z = body[2][start:end]
-        color = render_parameters['colors'][i]
-        marker = render_parameters['markers'][i]
-        render_parameters['axes'].plot(x,y,z,color=color,marker=marker)
+        lines[i].set_data(x,y)
+        lines[i].set_3d_properties(z)
+
 
 
 def render_animation(time_duration,body_list,render_parameters):
     number_visible_steps = int(time_duration*10) #ten frames per second
     figure = render_parameters['figure']
-    animator = functools.partial(animate,
-                                 time_duration=time_duration,
-                                 body_list=body_list,
-                                 render_parameters=render_parameters)
+    lines = initialize_animation(body_list,render_parameters)
+    animation = Animator.FuncAnimation(figure,animate,
+                    number_visible_steps,interval=100,blit=False,
+                    fargs=(body_list,
+                           time_duration,
+                           number_visible_steps,
+                           render_parameters,
+                           lines)
+                    )
+    animation.save('animation.mp4')
 
-    pretty_animation = Animator.FuncAnimation(figure,animator,
-                        number_visible_steps,interval=100,blit=False)
-    pretty_animation.save('animation.mp4')
 
 
 def visualize_simulation(time_duration, body_list, render_parameters):
     animate_mode = render_parameters['animate mode']
     flat_mode = render_parameters['flat mode']
-
     number_bodies = len(body_list)
     initialize_render(render_parameters,number_bodies,flat_mode)
     render_image(render_parameters,body_list)
     if animate_mode:
+        print('Image drawn, rendering animation...')
         render_animation(time_duration,body_list,render_parameters)
-    print('Simulation rendered, program complete.')
+        print('Animation rendered, program complete.')
+    else:
+        print('Image drawn, program complete.')

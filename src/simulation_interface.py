@@ -49,5 +49,5 @@ def simulate(time_duration, timestep_length, initial_conditions):
             dimension_list.append(step_list)
         body_list.append(dimension_list)
 
-    print("Data transfer complete, rendering...")
+    print("Data transfer complete, drawing image...")
     return body_list
