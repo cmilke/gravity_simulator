@@ -5,7 +5,6 @@ import numpy
 
 
 
-
 def simulate(time_duration, timestep_length, initial_conditions):
     number_steps = int(time_duration*10 / timestep_length)
 

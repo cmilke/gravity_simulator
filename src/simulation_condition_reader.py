@@ -1,12 +1,12 @@
-_gravitational_constant = 6.674e-11
-_distance_scale_factor = 1e-9
-_period_scale_factor = 5e-5
+_gravitational_constant = 6.674e-11 #alters the force of gravity. 6.67e-11 is the real-world value
+_distance_scale_factor = 1e-9 #makes everything bigger or smaller (basically the same as camera controls)
+_period_scale_factor = 5e-5 #changes how fast time moves. 1 = real-time, 1e-3 = 1000 times faster
 _velocity_scale_factor = _distance_scale_factor / _period_scale_factor
 _mass_scale_factor = _gravitational_constant * ( _distance_scale_factor**3 / _period_scale_factor**2 )
 
 
 
-def read(conditions_file_name):
+def read(conditions_file_name, render_parameters):
     conditions_file = open(conditions_file_name,'r')
 
     mass_list = [] 
@@ -42,4 +42,7 @@ def read(conditions_file_name):
                           'position':init_pos,
                           'velocity':init_vel}
 
-    return initial_conditions, colors, markers
+    render_parameters['colors'] = colors
+    render_parameters['markers'] = markers
+
+    return initial_conditions

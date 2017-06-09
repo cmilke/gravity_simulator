@@ -36,9 +36,9 @@ def set_axes_parameters(render_parameters):
 
 
 
-def render_image(render_parameters, body_list):
+def render_image(render_parameters, position_list):
     set_axes_parameters(render_parameters)
-    for i,body in enumerate(body_list):
+    for i,body in enumerate(position_list):
         x = body[0]
         y = body[1]
         z = body[2]
@@ -49,14 +49,14 @@ def render_image(render_parameters, body_list):
 
 
 
-def initialize_animation(body_list, render_parameters):
+def initialize_animation(position_list, render_parameters):
     Plotter.cla()
     color = render_parameters['colors']
     marker = render_parameters['markers']
     axes = render_parameters['axes']
     set_axes_parameters(render_parameters)
     lines = []
-    for i,body in enumerate(body_list):
+    for i,body in enumerate(position_list):
         line = axes.plot(body[0][0:1], 
                          body[1][0:1],
                          body[2][0:1],
@@ -67,15 +67,18 @@ def initialize_animation(body_list, render_parameters):
 
 
 
-def animate(visible_step, body_list, time_duration, number_visible_steps, render_parameters, lines):
-    number_steps = len(body_list[0][0])
+def animate(visible_step, position_list, time_duration, number_visible_steps, render_parameters, lines):
+    number_steps = len(position_list[0][0])
     animation_trail_length = int(number_steps / _trail_length_divisor)
 
     end = int(visible_step * number_steps / number_visible_steps)
-    start = end - animation_trail_length
-    if start < 0: start = 0
+    start = end - 1
+    if render_parameters['render trails']:
+        start = end - animation_trail_length
+    if start < 0:
+        start = 0
 
-    for i,body in enumerate(body_list):
+    for i,body in enumerate(position_list):
         x = body[0][start:end]
         y = body[1][start:end]
         z = body[2][start:end]
@@ -84,13 +87,13 @@ def animate(visible_step, body_list, time_duration, number_visible_steps, render
 
 
 
-def render_animation(time_duration,body_list,render_parameters):
+def render_animation(time_duration,position_list,render_parameters):
     number_visible_steps = int(time_duration*10) #ten frames per second
     figure = render_parameters['figure']
-    lines = initialize_animation(body_list,render_parameters)
+    lines = initialize_animation(position_list,render_parameters)
     animation = Animator.FuncAnimation(figure,animate,
                     number_visible_steps,interval=100,blit=False,
-                    fargs=(body_list,
+                    fargs=(position_list,
                            time_duration,
                            number_visible_steps,
                            render_parameters,
@@ -100,15 +103,15 @@ def render_animation(time_duration,body_list,render_parameters):
 
 
 
-def visualize_simulation(time_duration, body_list, render_parameters):
+def visualize_simulation(time_duration, position_list, render_parameters):
     animate_mode = render_parameters['animate mode']
     flat_mode = render_parameters['flat mode']
-    number_bodies = len(body_list)
+    number_bodies = len(position_list)
     initialize_render(render_parameters,number_bodies,flat_mode)
-    render_image(render_parameters,body_list)
+    render_image(render_parameters,position_list)
     if animate_mode:
         print('Image drawn, rendering animation...')
-        render_animation(time_duration,body_list,render_parameters)
+        render_animation(time_duration,position_list,render_parameters)
         print('Animation rendered, program complete.')
     else:
         print('Image drawn, program complete.')
