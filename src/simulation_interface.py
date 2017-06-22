@@ -1,7 +1,6 @@
 import os 
 import ctypes
 import math
-import numpy
 
 
 
